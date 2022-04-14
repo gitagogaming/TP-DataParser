@@ -1,0 +1,173 @@
+{
+    "sdk": 4,
+    "version": 300,
+    "name": "Touch Portal JsonParser",
+    "id": "KillerBOSS.TPPlugin.JsonParser",
+    "configuration": {
+      "colorDark": "#f54242",
+      "colorLight": "#f5a442"
+    },
+    "settings": [
+      {
+        "name": "IPv4 address",
+        "type": "text",
+        "default": "localhost",
+        "readOnly": false
+      }],
+    "plugin_start_cmd": "%TP_PLUGIN_FOLDER%",
+    "categories": [
+      {
+        "id": "Main",
+        "name": "TP-JsonParser",
+        "imagepath": "%TP_PLUGIN_FOLDER%",
+        "actions": [
+          {
+            "id": "KillerBOSS.TouchPortal.Plugin.JsonParser.createHTTPlistener",
+            "name": "JsonParser create listener",
+            "prefix": "plugin",
+            "type": "communicate",
+            "tryInline": true,
+            "format": "Create listener name {$KillerBOSS.TouchPortal.Plugin.JsonParser.createHTTPlistener.listenerName$} Host{$KillerBOSS.TouchPortal.Plugin.JsonParser.createHTTPlistener.Host$} and header{$KillerBOSS.TouchPortal.Plugin.JsonParser.createHTTPlistener.header$}",
+            "data": [
+                {
+                    "id": "KillerBOSS.TouchPortal.Plugin.JsonParser.createHTTPlistener.listenerName",
+                    "label": "listenerName",
+                    "type": "text",
+                    "default": ""
+                },
+                {
+                    "id": "KillerBOSS.TouchPortal.Plugin.JsonParser.createHTTPlistener.Host",
+                    "label": "host URL",
+                    "type": "text",
+                    "default": ""
+                },
+                {
+                    "id": "KillerBOSS.TouchPortal.Plugin.JsonParser.createHTTPlistener.header",
+                    "label": "Header",
+                    "type": "text",
+                    "default": ""
+                }
+            ]
+          },
+          {
+            "id": "KillerBOSS.TouchPortal.Plugin.JsonParser.SetuprequestUsingListener",
+            "name": "JsonParser setup request using listener",
+            "prefix": "plugin",
+            "type": "communicate",
+            "tryInline": true,
+            "format": "Use {$KillerBOSS.TouchPortal.Plugin.JsonParser.SetuprequestUsingListener.listoflistener$} {$KillerBOSS.TouchPortal.Plugin.JsonParser.SetuprequestUsingListener.requestMethods$} to endpoint{$KillerBOSS.TouchPortal.Plugin.JsonParser.SetuprequestUsingListener.endpoint$} optional body{$KillerBOSS.TouchPortal.Plugin.JsonParser.SetuprequestUsingListener.body$} and update every{$KillerBOSS.TouchPortal.Plugin.JsonParser.SetuprequestUsingListener.updateinSecond$}Second save result to {$KillerBOSS.TouchPortal.Plugin.JsonParser.SetuprequestUsingListener.result$}",
+            "data": [
+                {
+                    "id": "KillerBOSS.TouchPortal.Plugin.JsonParser.SetuprequestUsingListener.listoflistener",
+                    "label": "list of listener",
+                    "type": "choice",
+                    "default": "",
+                    "valueChoices": []
+                },
+                {
+                    "id": "KillerBOSS.TouchPortal.Plugin.JsonParser.SetuprequestUsingListener.requestMethods",
+                    "label": "list of listener",
+                    "type": "choice",
+                    "default": "GET",
+                    "valueChoices": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE"
+                    ]
+                },
+                {
+                    "id": "KillerBOSS.TouchPortal.Plugin.JsonParser.SetuprequestUsingListener.endpoint",
+                    "label": "endpoint",
+                    "type": "text",
+                    "default": "/"
+                },
+                {
+                    "id": "KillerBOSS.TouchPortal.Plugin.JsonParser.SetuprequestUsingListener.body",
+                    "label": "body",
+                    "type": "text",
+                    "default": ""
+                },
+                {
+                    "id": "KillerBOSS.TouchPortal.Plugin.JsonParser.SetuprequestUsingListener.updateinSecond",
+                    "label": "update interval",
+                    "type": "text",
+                    "default": "5"
+                },
+                {
+                    "id": "KillerBOSS.TouchPortal.Plugin.JsonParser.SetuprequestUsingListener.result",
+                    "label": "save result",
+                    "type": "text",
+                    "default": ""
+                }
+            ]
+          },
+          {
+            "id": "KillerBOSS.TouchPortal.Plugin.JsonParser.parsingData",
+            "name": "JsonParser parse json",
+            "prefix": "plugin",
+            "type": "communicate",
+            "tryInline": true,
+            "format": "Parse json data{$KillerBOSS.TouchPortal.Plugin.JsonParser.parsingData.data$} to get {$KillerBOSS.TouchPortal.Plugin.JsonParser.parsingData.jsonPath$} and save result to {$KillerBOSS.TouchPortal.Plugin.JsonParser.parsingData.savingResult$}",
+            "data": [
+                {
+                    "id": "KillerBOSS.TouchPortal.Plugin.JsonParser.parsingData.data",
+                    "label": "parsing data",
+                    "type": "text",
+                    "default": ""
+                },
+                {
+                    "id": "KillerBOSS.TouchPortal.Plugin.JsonParser.parsingData.jsonPath",
+                    "label": "parsing data",
+                    "type": "text",
+                    "default": ""
+                },
+                {
+                    "id": "KillerBOSS.TouchPortal.Plugin.JsonParser.parsingData.savingResult",
+                    "label": "parsing data",
+                    "type": "text",
+                    "default": ""
+                }
+            ]
+          },
+          {
+            "id": "KillerBOSS.TouchPortal.Plugin.JsonParser.listenerControl",
+            "name": "JsonParser resume/pause/delete listener",
+            "prefix": "plugin",
+            "type": "communicate",
+            "tryInline": true,
+            "format": "{$KillerBOSS.TouchPortal.Plugin.JsonParser.listenerControl.controls$} {$KillerBOSS.TouchPortal.Plugin.JsonParser.listenerControl.listoflistener$} update",
+            "data": [
+                {
+                    "id": "KillerBOSS.TouchPortal.Plugin.JsonParser.listenerControl.controls",
+                    "label": "list of listener controls",
+                    "type": "choice",
+                    "default": "Delete",
+                    "valueChoices": [
+                        "Pause",
+                        "Resume",
+                        "Delete"
+                    ]
+                },
+                {
+                    "id": "KillerBOSS.TouchPortal.Plugin.JsonParser.listenerControl.listoflistener",
+                    "label": "list of listener",
+                    "type": "choice",
+                    "default": "",
+                    "valueChoices": []
+                }
+            ]
+          }
+        ],
+        "events": [],
+        "states": [
+          {
+            "id": "KillerBOSS.TouchPortal.Plugin.JsonParser.States.totalListenerCreated",
+            "type": "text",
+            "desc": "JsonParser total listener Created",
+            "default": "0"
+          }
+        ]
+      }
+    ]
+  }
