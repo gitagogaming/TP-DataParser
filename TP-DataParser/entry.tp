@@ -1,0 +1,183 @@
+{
+    "sdk": 4,
+    "version": 300,
+    "name": "Touch Portal DataParser",
+    "id": "KillerBOSS.TPPlugin.DataParser",
+    "configuration": {
+      "colorDark": "#f54242",
+      "colorLight": "#f5a442"
+    },
+    "settings": [
+      {
+        "name": "IPv4 address",
+        "type": "text",
+        "default": "localhost",
+        "readOnly": false
+      }],
+    "plugin_start_cmd": "%TP_PLUGIN_FOLDER%",
+    "categories": [
+      {
+        "id": "Main",
+        "name": "TP-DataParser",
+        "imagepath": "%TP_PLUGIN_FOLDER%",
+        "actions": [
+          {
+            "id": "KillerBOSS.TouchPortal.Plugin.DataParser.createHTTPlistener",
+            "name": "DataParser create listener",
+            "prefix": "plugin",
+            "type": "communicate",
+            "tryInline": true,
+            "format": "Create listener name {$KillerBOSS.TouchPortal.Plugin.DataParser.createHTTPlistener.listenerName$} Host{$KillerBOSS.TouchPortal.Plugin.DataParser.createHTTPlistener.Host$} and header{$KillerBOSS.TouchPortal.Plugin.DataParser.createHTTPlistener.header$}",
+            "data": [
+                {
+                    "id": "KillerBOSS.TouchPortal.Plugin.DataParser.createHTTPlistener.listenerName",
+                    "label": "listenerName",
+                    "type": "text",
+                    "default": ""
+                },
+                {
+                    "id": "KillerBOSS.TouchPortal.Plugin.DataParser.createHTTPlistener.Host",
+                    "label": "host URL",
+                    "type": "text",
+                    "default": ""
+                },
+                {
+                    "id": "KillerBOSS.TouchPortal.Plugin.DataParser.createHTTPlistener.header",
+                    "label": "Header",
+                    "type": "text",
+                    "default": ""
+                }
+            ]
+          },
+          {
+            "id": "KillerBOSS.TouchPortal.Plugin.DataParser.SetuprequestUsingListener",
+            "name": "DataParser setup request using listener",
+            "prefix": "plugin",
+            "type": "communicate",
+            "tryInline": true,
+            "format": "Use {$KillerBOSS.TouchPortal.Plugin.DataParser.SetuprequestUsingListener.listoflistener$} {$KillerBOSS.TouchPortal.Plugin.DataParser.SetuprequestUsingListener.requestMethods$} to endpoint{$KillerBOSS.TouchPortal.Plugin.DataParser.SetuprequestUsingListener.endpoint$} optional body{$KillerBOSS.TouchPortal.Plugin.DataParser.SetuprequestUsingListener.body$} and update every{$KillerBOSS.TouchPortal.Plugin.DataParser.SetuprequestUsingListener.updateinSecond$}Second save result to {$KillerBOSS.TouchPortal.Plugin.DataParser.SetuprequestUsingListener.result$}",
+            "data": [
+                {
+                    "id": "KillerBOSS.TouchPortal.Plugin.DataParser.SetuprequestUsingListener.listoflistener",
+                    "label": "list of listener",
+                    "type": "choice",
+                    "default": "",
+                    "valueChoices": []
+                },
+                {
+                    "id": "KillerBOSS.TouchPortal.Plugin.DataParser.SetuprequestUsingListener.requestMethods",
+                    "label": "list of listener",
+                    "type": "choice",
+                    "default": "GET",
+                    "valueChoices": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE"
+                    ]
+                },
+                {
+                    "id": "KillerBOSS.TouchPortal.Plugin.DataParser.SetuprequestUsingListener.endpoint",
+                    "label": "endpoint",
+                    "type": "text",
+                    "default": "/"
+                },
+                {
+                    "id": "KillerBOSS.TouchPortal.Plugin.DataParser.SetuprequestUsingListener.body",
+                    "label": "body",
+                    "type": "text",
+                    "default": ""
+                },
+                {
+                    "id": "KillerBOSS.TouchPortal.Plugin.DataParser.SetuprequestUsingListener.updateinSecond",
+                    "label": "update interval",
+                    "type": "text",
+                    "default": "5"
+                },
+                {
+                    "id": "KillerBOSS.TouchPortal.Plugin.DataParser.SetuprequestUsingListener.result",
+                    "label": "save result",
+                    "type": "text",
+                    "default": ""
+                }
+            ]
+          },
+          {
+            "id": "KillerBOSS.TouchPortal.Plugin.DataParser.parsingData",
+            "name": "DataParser parse json",
+            "prefix": "plugin",
+            "type": "communicate",
+            "tryInline": true,
+            "format": "Parse {$KillerBOSS.TouchPortal.Plugin.DataParser.parsingData.dataType$} data{$KillerBOSS.TouchPortal.Plugin.DataParser.parsingData.data$} to get {$KillerBOSS.TouchPortal.Plugin.DataParser.parsingData.jsonPath$} and save result to {$KillerBOSS.TouchPortal.Plugin.DataParser.parsingData.savingResult$}",
+            "data": [
+                {
+                    "id": "KillerBOSS.TouchPortal.Plugin.DataParser.parsingData.data",
+                    "label": "parsing data",
+                    "type": "text",
+                    "default": ""
+                },
+                {
+                    "id": "KillerBOSS.TouchPortal.Plugin.DataParser.parsingData.jsonPath",
+                    "label": "parsing data",
+                    "type": "text",
+                    "default": ""
+                },
+                {
+                    "id": "KillerBOSS.TouchPortal.Plugin.DataParser.parsingData.savingResult",
+                    "label": "parsing data",
+                    "type": "text",
+                    "default": ""
+                },
+                {
+                  "id": "KillerBOSS.TouchPortal.Plugin.DataParser.parsingData.dataType",
+                  "label": "data Type",
+                  "type": "choice",
+                  "default": "Json",
+                  "valueChoices": [
+                      "Json",
+                      "Html"
+                  ]
+              }
+            ]
+          },
+          {
+            "id": "KillerBOSS.TouchPortal.Plugin.Parser.listenerControl",
+            "name": "DataParser resume/pause/delete listener",
+            "prefix": "plugin",
+            "type": "communicate",
+            "tryInline": true,
+            "format": "{$KillerBOSS.TouchPortal.Plugin.DataParser.listenerControl.controls$} {$KillerBOSS.TouchPortal.Plugin.DataParser.listenerControl.listoflistener$} update",
+            "data": [
+                {
+                    "id": "KillerBOSS.TouchPortal.Plugin.DataParser.listenerControl.controls",
+                    "label": "list of listener controls",
+                    "type": "choice",
+                    "default": "Delete",
+                    "valueChoices": [
+                        "Pause",
+                        "Resume",
+                        "Delete"
+                    ]
+                },
+                {
+                    "id": "KillerBOSS.TouchPortal.Plugin.DataParser.listenerControl.listoflistener",
+                    "label": "list of listener",
+                    "type": "choice",
+                    "default": "",
+                    "valueChoices": []
+                }
+            ]
+          }
+        ],
+        "events": [],
+        "states": [
+          {
+            "id": "KillerBOSS.TouchPortal.Plugin.DataParser.States.totalListenerCreated",
+            "type": "text",
+            "desc": "DataParser total listener Created",
+            "default": "0"
+          }
+        ]
+      }
+    ]
+  }
