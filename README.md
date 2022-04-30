@@ -1,2 +1,2 @@
-# TP-JsonParser
- TP-JsonParser allows user to create http request and if data type is json It can parse them
+# TP-DataParser
+ TP-DataParser allows user to create http request parse them ether with html or json
