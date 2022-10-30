@@ -6,6 +6,7 @@ from time import sleep
 import json
 from functools import reduce
 from pyquery import PyQuery
+import re
 
 TPClient = TouchPortalAPI.Client("KillerBOSS.TPPlugin.DataParser", updateStatesOnBroadcast=False)
 running = True
@@ -21,15 +22,11 @@ def findListener(listenerName):
     return None
 
 def jsonPathfinder(path, data):
-    pathlist = []
-    print(data)
+    ## Load the Data into a json object
     data = json.loads(data)
-    for path in path.split("."):
-        try:
-            pathlist.append(int(path))
-        except ValueError:
-            pathlist.append(path)
-    print(pathlist)
+    # Find Everything inside of brackets
+    pathlist= re.findall(r"\[\'(.*?)\'\]", path)
+    # Return the value of the path
     return reduce(lambda a, b: a[b], pathlist, data)
 
 def HtmlParser(html, path):
@@ -108,6 +105,8 @@ def actionManager(data):
     if data['actionId'] == "KillerBOSS.TouchPortal.Plugin.DataParser.parsingData":
         if data['data'][3]['value'] == "Json":
             parsedData = jsonPathfinder(data['data'][1]['value'], data['data'][0]['value'])
+            print("parsedData", parsedData)
+            
         elif data['data'][3]['value'] == "Html":
             parsedData = HtmlParser(data['data'][1]['value'], data['data'][0]['value'])
         TPClient.createState("KillerBOSS.TouchPortal.Plugin.DataParser.userState."+data['data'][2]['value'], data['data'][2]['value'], str(parsedData))
@@ -115,4 +114,3 @@ def actionManager(data):
 
 
 TPClient.connect()
-
