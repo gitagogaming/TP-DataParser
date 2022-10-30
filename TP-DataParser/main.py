@@ -11,7 +11,6 @@ import re
 TPClient = TouchPortalAPI.Client("KillerBOSS.TPPlugin.DataParser", updateStatesOnBroadcast=False)
 running = True
 
-
 requestListener = []
 
 def findListener(listenerName):
@@ -26,8 +25,8 @@ def jsonPathfinder(path, data):
     data = json.loads(data)
     # Find Everything inside of brackets
     pathlist= re.findall(r"\[\'(.*?)\'\]", path)
-    # Return the value of the path
-    return reduce(lambda a, b: a[b], pathlist, data)
+    # Return the value of the path ONLY if it exists
+    return reduce(lambda d, k: d.get(k, None) if isinstance(d, dict) else None, pathlist, data)
 
 def HtmlParser(html, path):
     pq = PyQuery(html)
@@ -78,6 +77,13 @@ def stateUpdate():
 def onStart(data):
     print(data)
     Thread(target=stateUpdate).start()
+    
+@TPClient.on('closePlugin')
+def onShutdown(data):
+  #  Debug_Log.g_log.g_log.info('Received Data from closePlugin')
+    print(data)
+    global running
+    running = False
 
 @TPClient.on(TYPES.onAction)
 def actionManager(data):
@@ -113,4 +119,34 @@ def actionManager(data):
 
 
 
-TPClient.connect()
+
+def main():
+    global TPClient#, g_log
+    ret = 0
+    try:
+        TPClient.connect()
+        print('TP Client closed.')
+    except ConnectionResetError:
+        print(f"Connection Reset Error:\n")
+    except KeyboardInterrupt:
+        print("Caught keyboard interrupt, exiting.")
+    except Exception as err:
+        from traceback import format_exc
+        print(f"Exception in TP Client:\n{format_exc()}")
+        ret = -1
+    finally:
+        print("The other shutdown")
+        TPClient.disconnect()
+        
+        
+    del TPClient
+    return ret
+
+
+import sys
+if __name__ == "__main__":
+    sys.exit(main())
+
+
+
+
