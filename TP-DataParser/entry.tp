@@ -7,14 +7,8 @@
       "colorDark": "#f54242",
       "colorLight": "#f5a442"
     },
-    "settings": [
-      {
-        "name": "IPv4 address",
-        "type": "text",
-        "default": "localhost",
-        "readOnly": false
-      }],
-    "plugin_start_cmd": "%TP_PLUGIN_FOLDER%",
+    "settings": [],
+    "plugin_start_cmd": "%TP_PLUGIN_FOLDER%TP-DataParser\\dataParser.exe",
     "categories": [
       {
         "id": "Main",
