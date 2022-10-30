@@ -6,10 +6,10 @@ from time import sleep
 import json
 from functools import reduce
 from pyquery import PyQuery
+import re
 
 TPClient = TouchPortalAPI.Client("KillerBOSS.TPPlugin.DataParser", updateStatesOnBroadcast=False)
 running = True
-
 
 requestListener = []
 
@@ -21,16 +21,12 @@ def findListener(listenerName):
     return None
 
 def jsonPathfinder(path, data):
-    pathlist = []
-    print(data)
+    ## Load the Data into a json object
     data = json.loads(data)
-    for path in path.split("."):
-        try:
-            pathlist.append(int(path))
-        except ValueError:
-            pathlist.append(path)
-    print(pathlist)
-    return reduce(lambda a, b: a[b], pathlist, data)
+    # Find Everything inside of brackets
+    pathlist= re.findall(r"\[\'(.*?)\'\]", path)
+    # Return the value of the path ONLY if it exists
+    return reduce(lambda d, k: d.get(k, None) if isinstance(d, dict) else None, pathlist, data)
 
 def HtmlParser(html, path):
     pq = PyQuery(html)
@@ -81,6 +77,13 @@ def stateUpdate():
 def onStart(data):
     print(data)
     Thread(target=stateUpdate).start()
+    
+@TPClient.on('closePlugin')
+def onShutdown(data):
+  #  Debug_Log.g_log.g_log.info('Received Data from closePlugin')
+    print(data)
+    global running
+    running = False
 
 @TPClient.on(TYPES.onAction)
 def actionManager(data):
@@ -108,11 +111,42 @@ def actionManager(data):
     if data['actionId'] == "KillerBOSS.TouchPortal.Plugin.DataParser.parsingData":
         if data['data'][3]['value'] == "Json":
             parsedData = jsonPathfinder(data['data'][1]['value'], data['data'][0]['value'])
+            print("parsedData", parsedData)
+            
         elif data['data'][3]['value'] == "Html":
             parsedData = HtmlParser(data['data'][1]['value'], data['data'][0]['value'])
         TPClient.createState("KillerBOSS.TouchPortal.Plugin.DataParser.userState."+data['data'][2]['value'], data['data'][2]['value'], str(parsedData))
 
 
 
-TPClient.connect()
+
+def main():
+    global TPClient#, g_log
+    ret = 0
+    try:
+        TPClient.connect()
+        print('TP Client closed.')
+    except ConnectionResetError:
+        print(f"Connection Reset Error:\n")
+    except KeyboardInterrupt:
+        print("Caught keyboard interrupt, exiting.")
+    except Exception as err:
+        from traceback import format_exc
+        print(f"Exception in TP Client:\n{format_exc()}")
+        ret = -1
+    finally:
+        print("The other shutdown")
+        TPClient.disconnect()
+        
+        
+    del TPClient
+    return ret
+
+
+import sys
+if __name__ == "__main__":
+    sys.exit(main())
+
+
+
 
