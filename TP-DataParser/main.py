@@ -70,7 +70,7 @@ def stateUpdate():
         if requestListener and "KillerBOSS.TouchPortal.Plugin.DataParser.SetuprequestUsingListener.listoflistener" not in TPClient.choiceUpdateList:
             if (listofListener := [list(x.keys())[0] for x in requestListener]) != TPClient.choiceUpdateList:
                 TPClient.choiceUpdate("KillerBOSS.TouchPortal.Plugin.DataParser.SetuprequestUsingListener.listoflistener", listofListener)
-        sleep(0.2)
+        sleep(0.5)
 
 @TPClient.on(TYPES.onConnect)
 def onStart(data):
