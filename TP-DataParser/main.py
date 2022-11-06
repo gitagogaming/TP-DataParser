@@ -7,9 +7,10 @@ import json
 from functools import reduce
 from pyquery import PyQuery
 import re
+import sys
 
 TPClient = TouchPortalAPI.Client("KillerBOSS.TPPlugin.DataParser", updateStatesOnBroadcast=False)
-running = True
+
 
 requestListener = []
 
@@ -17,7 +18,6 @@ def findListener(listenerName):
     for listener in requestListener:
         if listenerName == list(listener.keys())[0]:
             return listener
-    
     return None
 
 def jsonPathfinder(path, data):
@@ -31,7 +31,7 @@ def jsonPathfinder(path, data):
 def HtmlParser(html, path):
     pq = PyQuery(html)
     tag = pq(path)
-    print(tag.text())
+   # print(tag.text())
     return tag.text()
 
 def makeRequests(Method, endpoint, body, interval, result, listener):
@@ -66,9 +66,8 @@ def makeRequests(Method, endpoint, body, interval, result, listener):
 
 
 def stateUpdate():
-    while running:
+    while TPClient.isConnected():
         if requestListener and "KillerBOSS.TouchPortal.Plugin.DataParser.SetuprequestUsingListener.listoflistener" not in TPClient.choiceUpdateList:
-            print(requestListener)
             if (listofListener := [list(x.keys())[0] for x in requestListener]) != TPClient.choiceUpdateList:
                 TPClient.choiceUpdate("KillerBOSS.TouchPortal.Plugin.DataParser.SetuprequestUsingListener.listoflistener", listofListener)
         sleep(0.2)
@@ -80,10 +79,7 @@ def onStart(data):
     
 @TPClient.on('closePlugin')
 def onShutdown(data):
-  #  Debug_Log.g_log.g_log.info('Received Data from closePlugin')
-    print(data)
-    global running
-    running = False
+    print("Plugin has been shutdown")
 
 @TPClient.on(TYPES.onAction)
 def actionManager(data):
@@ -121,7 +117,7 @@ def actionManager(data):
 
 
 def main():
-    global TPClient#, g_log
+    global TPClient
     ret = 0
     try:
         TPClient.connect()
@@ -143,7 +139,7 @@ def main():
     return ret
 
 
-import sys
+
 if __name__ == "__main__":
     sys.exit(main())
 
